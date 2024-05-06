@@ -70,7 +70,7 @@ bool mctl_mem_matches_top(ulong offset)
 	static const unsigned value= 0xaa55aa55;
 
 	/* Take last usable memory address */
-	offset -= sizeof(unsigned);
+	offset -= sizeof(value);
 	dsb();
 	/* Set zero at last usable memory address */
 	writel(0, (ulong)CONFIG_SYS_SDRAM_BASE + offset);
@@ -80,5 +80,13 @@ bool mctl_mem_matches_top(ulong offset)
 	dsb();
 	/* Check if the same value is actually observed when reading back */
 	return readl((ulong)CONFIG_SYS_SDRAM_BASE + offset) == value;
+}
+
+/*
+ * Get memory address at offset of DRAM
+ */
+ulong mctl_mem_address(ulong offset)
+{
+	return (ulong)CONFIG_SYS_SDRAM_BASE + offset;
 }
 #endif
