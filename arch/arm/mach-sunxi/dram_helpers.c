@@ -52,13 +52,13 @@ bool mctl_mem_matches_top(ulong offset)
 	offset -= sizeof(value);
 	dsb();
 	/* Set zero at last usable memory address */
-	writel(0, (ulong)CONFIG_SYS_SDRAM_BASE + offset);
+	writel(0, (ulong)CFG_SYS_SDRAM_BASE + offset);
 	dsb();
 	/* Set other value at last usable memory address */
-	writel(value, (ulong)CONFIG_SYS_SDRAM_BASE + offset);
+	writel(value, (ulong)CFG_SYS_SDRAM_BASE + offset);
 	dsb();
 	/* Check if the same value is actually observed when reading back */
-	return readl((ulong)CONFIG_SYS_SDRAM_BASE + offset) == value;
+	return readl((ulong)CFG_SYS_SDRAM_BASE + offset) == value;
 }
 
 /*
@@ -66,6 +66,6 @@ bool mctl_mem_matches_top(ulong offset)
  */
 ulong mctl_mem_address(ulong offset)
 {
-	return (ulong)CONFIG_SYS_SDRAM_BASE + offset;
+	return (ulong)CFG_SYS_SDRAM_BASE + offset;
 }
 #endif
