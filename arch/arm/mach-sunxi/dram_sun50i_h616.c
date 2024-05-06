@@ -1348,9 +1348,16 @@ static void mctl_auto_detect_dram_size(const struct dram_para *para,
 static unsigned long mctl_calc_size(const struct dram_config *config)
 {
 	u8 width = config->bus_full_width ? 4 : 2;
+	unsigned long size;
 
 	/* 8 banks */
-	return (1ULL << (config->cols + config->rows + 3)) * width * config->ranks;
+	size = (1ULL << (config->cols + config->rows + 3)) * width * config->ranks;
+
+	/* Fix size if last usable memory address is not valid */
+	if (!mctl_mem_matches_top(size))
+		size = (size * 3) / 4;
+
+	return size;
 }
 
 static const struct dram_para para = {
